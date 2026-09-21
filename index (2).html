@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E6B70">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Hayot rejasi</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#F2F5F3;--card:#FFFFFF;--ink:#16282A;--ink2:#556769;--line:#D9E1DE;
+  --teal:#0E6B70;--teal-soft:#DDEEEE;--on-teal:#FFFFFF;--gold:#D99A00;--danger:#B3342F;--ok:#2E7D4F;
+  --serif:ui-serif,"Noto Serif",Georgia,serif;
+  --sans:system-ui,-apple-system,"Roboto","Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0F1719;--card:#172224;--ink:#E8F0EE;--ink2:#9BB0AE;--line:#263638;--teal:#58C4C6;--teal-soft:#1C3A3C;--on-teal:#0B1416;--gold:#F0B429;--danger:#E5736E;--ok:#6CC08C;}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+#app{max-width:520px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
+h1{font-family:var(--serif);font-size:24px;font-weight:600;margin:8px 0 4px;letter-spacing:-0.01em}
+.sub{font-size:14px;color:var(--ink2);margin:0 0 16px}
+.err{font-size:14px;color:var(--danger);margin:6px 0 0;min-height:0}
+input,select,button{font:inherit;color:inherit}
+input,select{width:100%;min-height:44px;padding:8px 12px;background:var(--card);border:1px solid var(--line);border-radius:8px}
+input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+input[type=range]{padding:0;min-height:32px;border:none;background:transparent;accent-color:var(--teal)}
+.btn{min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:transparent;cursor:pointer}
+.btn:active{background:var(--teal-soft)}
+.btn.pri{background:var(--teal);color:var(--on-teal);border-color:var(--teal);font-weight:600}
+.btn.sm{min-height:36px;padding:4px 12px;font-size:14px}
+.ghost{border:none;background:transparent;padding:8px;min-width:40px;min-height:40px;cursor:pointer;color:var(--ink2);border-radius:8px}
+.form{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);display:grid;gap:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hero .big{font-family:var(--serif);font-size:56px;line-height:1;font-weight:600;color:var(--teal);letter-spacing:-0.02em}
+.hero .cap{font-size:15px;color:var(--ink2);margin-top:6px}
+.strip{display:flex;gap:0;margin:18px 0 6px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.strip>div{flex:1;padding:12px 0}
+.strip>div+div{padding-left:16px;border-left:1px solid var(--line)}
+.strip b{display:block;font-family:var(--serif);font-size:24px;font-weight:600}
+.strip span{font-size:13px;color:var(--ink2)}
+.life{display:flex;align-items:center;gap:10px;margin-top:14px}
+.life label{font-size:14px;color:var(--ink2);white-space:nowrap}
+.life input[type=number]{width:72px;flex:none}
+.life .yil{font-size:14px;color:var(--ink2)}
+canvas{display:block;width:100%;margin-top:6px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.linkrow{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;margin-top:16px;padding:14px 0;border:none;border-top:1px solid var(--line);background:transparent;text-align:left;cursor:pointer}
+.linkrow small{display:block;font-size:13px;color:var(--ink2)}
+details{margin-top:8px;border-top:1px solid var(--line);padding-top:8px}
+summary{cursor:pointer;font-size:14px;color:var(--ink2);padding:8px 0}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal)}
+.list{margin-top:8px}
+.item{display:flex;gap:8px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.item .main{flex:1;min-width:0}
+.item .t{font-size:16px;overflow-wrap:anywhere}
+.item.done .t{text-decoration:line-through;color:var(--ink2)}
+.chips{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center}
+.chip{font-size:13px;padding:2px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink2)}
+.chip.work{border-color:var(--teal);color:var(--teal)}
+button.chip{cursor:pointer;min-height:28px}
+.chk{border:none;background:transparent;padding:6px;cursor:pointer;color:var(--ink2);line-height:0}
+.chk.on{color:var(--teal)}
+.totals{display:flex;gap:0;margin:14px 0 4px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.totals>div{flex:1;padding:10px 0}
+.totals>div+div{padding-left:16px;border-left:1px solid var(--line)}
+.totals b{display:block;font-family:var(--serif);font-size:20px;font-weight:600}
+.totals span{font-size:13px;color:var(--ink2)}
+.empty{padding:28px 0;color:var(--ink2);font-size:15px}
+.empty b{display:block;color:var(--ink);font-family:var(--serif);font-size:18px;margin-bottom:4px}
+.dots{display:flex;gap:6px}
+.dot{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--ink2)}
+.dot i{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line)}
+.dot i.on{background:var(--teal);border-color:var(--teal)}
+.amt.in{color:var(--ok)}.amt.out{color:var(--danger)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav .in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+nav button{border:none;background:transparent;padding:8px 0 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--ink2);cursor:pointer;min-height:56px}
+nav button.on{color:var(--teal);font-weight:600}
+nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (min-width:900px){
+  body{padding-left:200px}
+  #app{max-width:720px;padding:32px 32px 48px}
+  h1{font-size:28px}
+  canvas{max-width:560px}
+  nav{top:0;right:auto;width:200px;border-top:none;border-right:1px solid var(--line);padding-bottom:0}
+  nav .in{max-width:none;grid-template-columns:1fr;padding-top:24px}
+  nav button{flex-direction:row;justify-content:flex-start;gap:12px;padding:12px 24px;font-size:15px;min-height:48px}
+  nav button:hover{background:var(--teal-soft)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app" aria-live="polite"></div>
+<nav aria-label="Bo'limlar"><div class="in" id="nav"></div></nav>
+<script>
+(function(){
+var KEY='hayot-rejasi-v1';
+var D=[15,30,45,60,90,120,180];
+var WD=['Ya','Du','Se','Ch','Pa','Ju','Sh'];
+var tab='home';
+var ICONS={
+  home:'<rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/>',
+  today:'<circle cx="12" cy="12" r="9"/><polyline points="8 12.5 11 15.5 16 9"/>',
+  goals:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.8"/>',
+  money:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1"/>',
+  habits:'<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-9z"/>'
+};
+var NAV=[['home','Hayot'],['today','Bugun'],['goals','Maqsad'],['money','Moliya'],['habits','Odat']];
+
+function pad(n){return n<10?'0'+n:''+n;}
+function ds(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+function fm(m){if(m<60)return m+' daq';var h=Math.floor(m/60),r=m%60;return h+' soat'+(r?' '+r+' daq':'');}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+function load(){
+  var d={birth:'1990-01-09',life:80,tasks:[],goals:[],tx:[],habits:[]};
+  try{var r=JSON.parse(localStorage.getItem(KEY));
+    if(r&&typeof r==='object'){for(var k in d){if(r[k]===undefined)r[k]=d[k];}return r;}
+  }catch(e){}
+  return d;
+}
+var S=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+
+function calc(){
+  var p=S.birth.split('-'),b=new Date(+p[0],+p[1]-1,+p[2]);
+  var n=new Date(),t0=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  var days=Math.round((t0-b)/86400000);
+  var wl=Math.max(0,Math.floor(days/7));
+  var age=t0.getFullYear()-b.getFullYear();
+  if(t0.getMonth()<b.getMonth()||(t0.getMonth()===b.getMonth()&&t0.getDate()<b.getDate()))age--;
+  var nb=new Date(t0.getFullYear(),b.getMonth(),b.getDate());
+  if(nb<t0)nb=new Date(t0.getFullYear()+1,b.getMonth(),b.getDate());
+  return {wl:wl,age:age,dl:Math.round((nb-t0)/86400000)};
+}
+function lifeOk(c){if(!(S.life>c.age&&S.life<=120)){S.life=Math.min(120,Math.max(c.age+1,80));}}
+function leftMin(){return S.tasks.reduce(function(s,t){return s+(t.d?0:t.m);},0);}
+function allMin(){return S.tasks.reduce(function(s,t){return s+t.m;},0);}
+function streak(h){
+  var d=new Date();d.setHours(12);
+  if(!h.log[ds(d)])d.setDate(d.getDate()-1);
+  var n=0;while(h.log[ds(d)]){n++;d.setDate(d.getDate()-1);}
+  return n;
+}
+
+function nav(){
+  document.getElementById('nav').innerHTML=NAV.map(function(x){
+    return '<button data-a="tab" data-v="'+x[0]+'"'+(tab===x[0]?' class="on" aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+ICONS[x[0]]+'</svg>'+x[1]+'</button>';
+  }).join('');
+}
+
+function vHome(){
+  var c=calc();lifeOk(c);var L=S.life;
+  var open=S.tasks.filter(function(t){return !t.d;}).length;
+  var lg='';
+  return '<h1>Hayot haftalari</h1><p class="sub">Har bir katak &mdash; bitta hafta</p>'
+  +'<section class="hero"><div class="big">'+fmt(c.wl)+'</div><div class="cap">hafta yashadingiz, '+c.age+' yosh</div></section>'
+  +'<div class="strip"><div><b id="pc">'+Math.round(c.wl/(L*52)*100)+'%</b><span>shartli umrdan</span></div><div><b>'+c.dl+'</b><span>kun tug\'ilgan kungacha</span></div></div>'
+  +'<div class="life"><label for="ni">Shartli umr</label><input type="range" id="sl" min="'+(c.age+1)+'" max="120" step="1" value="'+L+'" aria-label="Shartli umr slayderi"><input type="number" id="ni" inputmode="numeric" min="'+(c.age+1)+'" max="120" value="'+L+'"><span class="yil">yil</span></div>'
+  +'<p class="err" id="e5"></p>'
+  +'<canvas id="cv" role="img" aria-label="Hayot haftalari jadvali"></canvas>'
+  +'<div class="legend"><span><i id="l1"></i>o\'tgan</span><span><i id="l2"></i>shu hafta</span><span><i id="l3"></i>oldinda</span></div>'
+  +'<button class="linkrow" data-a="tab" data-v="today"><span>Bugun<small>'+open+' ta ochiq vazifa, qolgan vaqt '+fm(leftMin())+'</small></span><span aria-hidden="true">&rsaquo;</span></button>'
+  +'<details><summary>Tug\'ilgan sana</summary><label class="sr" for="bd">Tug\'ilgan sana</label><input type="date" id="bd" value="'+esc(S.birth)+'"><p class="err" id="e6"></p></details>';
+}
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function drawWeeks(){
+  var c=calc(),cv=document.getElementById('cv');if(!cv)return;
+  var cA=css('--teal'),cW=css('--gold'),cE=css('--line'),cT=css('--ink2');
+  var l1=document.getElementById('l1'),l2=document.getElementById('l2'),l3=document.getElementById('l3');
+  l1.style.background=cA;l2.style.background=cW;l3.style.border='1px solid '+cT;
+  var L=S.life,W=cv.parentElement.clientWidth||340,ml=26,cw=(W-ml)/52,sz=Math.max(2,cw-1.5),H=Math.ceil(L*cw+4),d=window.devicePixelRatio||1;
+  cv.width=W*d;cv.height=H*d;cv.style.height=H+'px';
+  var x=cv.getContext('2d');x.scale(d,d);x.clearRect(0,0,W,H);x.font='11px sans-serif';x.textBaseline='middle';
+  for(var r=0;r<L;r++){
+    if(r%10===0&&r>0){x.fillStyle=cT;x.fillText(r,0,r*cw+sz/2);}
+    for(var k=0;k<52;k++){
+      var i=r*52+k,px=ml+k*cw,py=r*cw;
+      if(i<c.wl){x.fillStyle=cA;x.fillRect(px,py,sz,sz);}
+      else if(i===c.wl){x.fillStyle=cW;x.fillRect(px-1,py-1,sz+2,sz+2);}
+      else{x.strokeStyle=cT;x.globalAlpha=0.55;x.lineWidth=0.6;x.strokeRect(px+0.3,py+0.3,sz-0.6,sz-0.6);x.globalAlpha=1;}
+    }
+  }
+}
+function setLife(n,fromSlider){
+  S.life=n;save();
+  if(fromSlider)document.getElementById('ni').value=n;else document.getElementById('sl').value=n;
+  document.getElementById('e5').textContent='';
+  document.getElementById('pc').textContent=Math.round(calc().wl/(n*52)*100)+'%';
+  drawWeeks();
+}
+
+function vToday(){
+  var done=S.tasks.filter(function(t){return t.d;}).length,tot=S.tasks.length,p=tot?Math.round(done/tot*100):0;
+  var h='<h1>Bugun</h1><p class="sub">'+done+' / '+tot+' vazifa bajarildi</p><div class="bar" role="progressbar" aria-valuenow="'+p+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+p+'%"></i></div>';
+  h+='<div class="totals"><div><b>'+fm(allMin())+'</b><span>jami reja</span></div><div><b>'+fm(leftMin())+'</b><span>qolgan vaqt</span></div></div>';
+  if(!tot){h+='<div class="empty"><b>Birinchi vazifani qo\'shing</b>Har bir vazifaga sarflanadigan vaqtni tanlang.</div>';}
+  else{
+    h+='<div class="list">';
+    S.tasks.forEach(function(t){
+      h+='<div class="item'+(t.d?' done':'')+'"><button class="chk'+(t.d?' on':'')+'" data-a="toggleTask" data-id="'+t.id+'" aria-label="'+(t.d?'Bekor qilish':'Bajarildi deb belgilash')+'"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/>'+(t.d?'<polyline points="8 12.5 11 15.5 16 9"/>':'')+'</svg></button>'
+      +'<div class="main"><div class="t">'+esc(t.t)+'</div><div class="chips"><span class="chip'+(t.c==='Ish'?' work':'')+'">'+t.c+'</span><button class="chip" data-a="dur" data-id="'+t.id+'" aria-label="Vaqtni o\'zgartirish">'+fm(t.m)+'</button></div></div>'
+      +'<button class="ghost" data-a="delTask" data-id="'+t.id+'" aria-label="O\'chirish">&#10005;</button></div>';
+    });
+    h+='</div><p class="sub" style="margin-top:8px;font-size:13px">Vaqtni o\'zgartirish uchun uning ustiga bosing.</p>';
+    if(done)h+='<button class="btn sm" data-a="clearDone">Bajarilganlarni tozalash</button>';
+  }
+  h+='<div class="form"><label class="sr" for="ti">Yangi vazifa</label><input id="ti" type="text" placeholder="Yangi vazifa" autocomplete="off"><div class="two"><select id="tc" aria-label="Turi"><option>Ish</option><option>Shaxsiy</option></select><select id="tm" aria-label="Sarflanadigan vaqt">'+D.map(function(m){return '<option value="'+m+'"'+(m===30?' selected':'')+'>'+fm(m)+'</option>';}).join('')+'</select></div><button class="btn pri" data-a="addTask">Vazifa qo\'shish</button><p class="err" id="e1"></p></div>';
+  return h;
+}
+
+function vGoals(){
+  var h='<h1>Maqsadlar</h1><p class="sub">Katta maqsadni kichik qadamlarga bo\'ling</p>';
+  if(!S.goals.length)h+='<div class="empty"><b>Birinchi maqsadni yozing</b>Keyin uni +10% qadamlar bilan oldinga siljitasiz.</div>';
+  else{
+    h+='<div class="list">';
+    S.goals.forEach(function(g){
+      h+='<div class="item" style="flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between;gap:8px;width:100%"><span class="t" style="overflow-wrap:anywhere">'+esc(g.n)+'</span><span style="color:var(--ink2);font-size:14px">'+g.p+'%</span></div>'
+      +'<div class="bar" style="width:100%"><i style="width:'+g.p+'%"></i></div>'
+      +'<div style="display:flex;gap:8px;width:100%"><button class="btn sm" data-a="goalDown" data-id="'+g.id+'" aria-label="10% kamaytirish">&minus;10%</button><button class="btn sm" data-a="goalUp" data-id="'+g.id+'">+10%</button><span style="flex:1"></span><button class="ghost" data-a="delGoal" data-id="'+g.id+'" aria-label="O\'chirish">&#10005;</button></div></div>';
+    });
+    h+='</div>';
+  }
+  h+='<div class="form"><label class="sr" for="gi">Yangi maqsad</label><input id="gi" type="text" placeholder="Yangi maqsad" autocomplete="off"><button class="btn pri" data-a="addGoal">Maqsad qo\'shish</button><p class="err" id="e2"></p></div>';
+  return h;
+}
+
+function vMoney(){
+  var mk=ds(new Date()).slice(0,7),inc=0,out=0,mi=0,mo=0;
+  S.tx.forEach(function(t){
+    if(t.k==='in'){inc+=t.a;if(t.d.slice(0,7)===mk)mi+=t.a;}else{out+=t.a;if(t.d.slice(0,7)===mk)mo+=t.a;}
+  });
+  var h='<h1>Moliya</h1><p class="sub">Daromad va xarajatlar, so\'mda</p>'
+  +'<div class="totals"><div><b>'+fmt(mi)+'</b><span>shu oy daromad</span></div><div><b>'+fmt(mo)+'</b><span>shu oy xarajat</span></div></div>'
+  +'<div class="totals" style="margin-top:0;border-top:none"><div><b>'+fmt(inc-out)+'</b><span>umumiy qoldiq</span></div></div>';
+  if(!S.tx.length)h+='<div class="empty"><b>Birinchi yozuvni qo\'shing</b>Har bir daromad yoki xarajatni nomi va summasi bilan yozing.</div>';
+  else{
+    h+='<div class="list">';
+    S.tx.slice().reverse().slice(0,8).forEach(function(t){
+      h+='<div class="item" style="align-items:center"><div class="main"><div class="t">'+esc(t.n)+'</div><div style="font-size:13px;color:var(--ink2)">'+esc(t.d)+'</div></div><span class="amt '+t.k+'">'+(t.k==='in'?'+':'-')+fmt(t.a)+'</span><button class="ghost" data-a="delTx" data-id="'+t.id+'" aria-label="O\'chirish">&#10005;</button></div>';
+    });
+    h+='</div>';
+  }
+  h+='<div class="form"><label class="sr" for="mn">Nomi</label><input id="mn" type="text" placeholder="Nomi" autocomplete="off"><div class="two"><input id="ma" type="number" inputmode="numeric" min="0" placeholder="Summa" aria-label="Summa"><select id="mk" aria-label="Turi"><option value="out">Xarajat</option><option value="in">Daromad</option></select></div><button class="btn pri" data-a="addTx">Yozuv qo\'shish</button><p class="err" id="e3"></p></div>';
+  return h;
+}
+
+function vHabits(){
+  var days=[];for(var k=6;k>=0;k--){var d=new Date();d.setDate(d.getDate()-k);days.push(d);}
+  var td=ds(new Date());
+  var h='<h1>Odatlar</h1><p class="sub">So\'nggi 7 kun</p>';
+  if(!S.habits.length)h+='<div class="empty"><b>Birinchi odatni qo\'shing</b>Har kuni bajarganingizda belgilab boring.</div>';
+  else{
+    h+='<div class="list">';
+    S.habits.forEach(function(x){
+      var dots=days.map(function(d){return '<div class="dot"><i class="'+(x.log[ds(d)]?'on':'')+'"></i>'+WD[d.getDay()]+'</div>';}).join('');
+      h+='<div class="item" style="flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between;gap:8px;width:100%"><span class="t">'+esc(x.n)+'</span><span style="color:var(--ink2);font-size:14px">'+streak(x)+' kun ketma-ket</span></div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-end;width:100%"><div class="dots">'+dots+'</div><div style="display:flex;gap:4px"><button class="btn sm" data-a="habit" data-id="'+x.id+'">'+(x.log[td]?'Bekor qilish':'Bugun bajardim')+'</button><button class="ghost" data-a="delHabit" data-id="'+x.id+'" aria-label="O\'chirish">&#10005;</button></div></div></div>';
+    });
+    h+='</div>';
+  }
+  h+='<div class="form"><label class="sr" for="hi">Yangi odat</label><input id="hi" type="text" placeholder="Yangi odat" autocomplete="off"><button class="btn pri" data-a="addHabit">Odat qo\'shish</button><p class="err" id="e4"></p></div>';
+  return h;
+}
+
+function render(){
+  nav();
+  var v={home:vHome,today:vToday,goals:vGoals,money:vMoney,habits:vHabits}[tab];
+  document.getElementById('app').innerHTML=v();
+  if(tab==='home')drawWeeks();
+}
+function need(id,eid,msg){var v=document.getElementById(id).value.trim();if(!v){document.getElementById(eid).textContent=msg;return null;}return v;}
+function byId(list,id){for(var i=0;i<list.length;i++){if(list[i].id===id)return i;}return -1;}
+
+var app=document.getElementById('app');
+app.addEventListener('input',function(e){
+  var id=e.target.id;
+  if(id==='sl'){setLife(parseInt(e.target.value,10),true);return;}
+  if(id==='ni'){
+    var c=calc(),n=parseInt(e.target.value,10);
+    if(!(n>c.age&&n<=120)){document.getElementById('e5').textContent='Yoshni '+(c.age+1)+' dan 120 gacha kiriting';return;}
+    setLife(n,false);return;
+  }
+  var errs=app.querySelectorAll('.err');for(var i=0;i<errs.length;i++){errs[i].textContent='';}
+});
+app.addEventListener('change',function(e){
+  if(e.target.id!=='bd')return;
+  var v=e.target.value,er=document.getElementById('e6');
+  var d=new Date(v+'T12:00:00');
+  if(!v||isNaN(d)||d>new Date()||d.getFullYear()<1900){er.textContent='To\'g\'ri sanani kiriting';return;}
+  S.birth=v;save();render();
+});
+app.addEventListener('keydown',function(e){
+  if(e.key!=='Enter')return;
+  var map={ti:'addTask',gi:'addGoal',mn:'addTx',ma:'addTx',hi:'addHabit'};
+  var a=map[e.target.id];if(!a)return;
+  e.preventDefault();act(a,null,null);
+});
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-a]');if(!b)return;
+  act(b.getAttribute('data-a'),b.getAttribute('data-id'),b.getAttribute('data-v'));
+});
+function act(a,id,v){
+  var i,x;
+  if(a==='tab'){tab=v;window.scrollTo(0,0);}
+  else if(a==='toggleTask'){i=byId(S.tasks,id);if(i>=0)S.tasks[i].d=!S.tasks[i].d;}
+  else if(a==='delTask'){i=byId(S.tasks,id);if(i>=0)S.tasks.splice(i,1);}
+  else if(a==='clearDone'){S.tasks=S.tasks.filter(function(t){return !t.d;});}
+  else if(a==='dur'){i=byId(S.tasks,id);if(i>=0){var k=D.indexOf(S.tasks[i].m);S.tasks[i].m=D[(k+1)%D.length];}}
+  else if(a==='addTask'){x=need('ti','e1','Vazifa nomini kiriting');if(!x)return;S.tasks.push({id:uid(),t:x,c:document.getElementById('tc').value,d:false,m:parseInt(document.getElementById('tm').value,10)});}
+  else if(a==='goalUp'){i=byId(S.goals,id);if(i>=0)S.goals[i].p=Math.min(100,S.goals[i].p+10);}
+  else if(a==='goalDown'){i=byId(S.goals,id);if(i>=0)S.goals[i].p=Math.max(0,S.goals[i].p-10);}
+  else if(a==='delGoal'){i=byId(S.goals,id);if(i>=0)S.goals.splice(i,1);}
+  else if(a==='addGoal'){x=need('gi','e2','Maqsad nomini kiriting');if(!x)return;S.goals.push({id:uid(),n:x,p:0});}
+  else if(a==='addTx'){
+    var n=need('mn','e3','Yozuv nomini kiriting');if(!n)return;
+    var am=parseFloat(document.getElementById('ma').value);
+    if(!(am>0)){document.getElementById('e3').textContent='Summani kiriting';return;}
+    S.tx.push({id:uid(),n:n,a:am,k:document.getElementById('mk').value,d:ds(new Date())});
+  }
+  else if(a==='delTx'){i=byId(S.tx,id);if(i>=0)S.tx.splice(i,1);}
+  else if(a==='habit'){i=byId(S.habits,id);if(i>=0){var t=ds(new Date());if(S.habits[i].log[t])delete S.habits[i].log[t];else S.habits[i].log[t]=1;}}
+  else if(a==='delHabit'){i=byId(S.habits,id);if(i>=0)S.habits.splice(i,1);}
+  else if(a==='addHabit'){x=need('hi','e4','Odat nomini kiriting');if(!x)return;S.habits.push({id:uid(),n:x,log:{}});}
+  else return;
+  save();render();
+}
+var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){if(tab==='home')drawWeeks();},150);});
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+render();
+})();
+</script>
+</body>
+</html>

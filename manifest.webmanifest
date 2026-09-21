@@ -1,0 +1,17 @@
+{
+  "name": "Hayot rejasi",
+  "short_name": "Hayot",
+  "description": "Hayot haftalari, vazifalar, maqsadlar, moliya va odatlar",
+  "lang": "uz",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F5F3",
+  "theme_color": "#0E6B70",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
